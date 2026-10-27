@@ -1,0 +1,498 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DriveFlex | Aluguel de Carros e Gestão de Parceiros</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+    <!-- Notificação / Modal Customizado (Substitui o alert) -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-32 opacity-0 transition-all duration-300 bg-emerald-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center space-x-3">
+        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        <div>
+            <h4 class="font-bold text-sm" id="toast-title">Sucesso!</h4>
+            <p class="text-xs text-emerald-100" id="toast-message">Operação realizada com sucesso.</p>
+        </div>
+    </div>
+
+    <!-- Cabeçalho / Navbar -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <span class="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">DriveFlex</span>
+            </div>
+            <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-slate-600">
+                <a href="#frota" class="hover:text-blue-600 transition">Nossa Frota</a>
+                <a href="#motorista" class="hover:text-blue-600 transition">Motorista Particular</a>
+                <a href="#calculadora" class="hover:text-blue-600 transition">Calcule sua Rota</a>
+                <a href="#parceiros" class="hover:text-blue-600 transition text-blue-600 font-semibold">Seja um Parceiro</a>
+            </nav>
+            <div>
+                <a href="#calculadora" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-2.5 rounded-xl shadow-lg shadow-blue-600/20 transition text-sm">
+                    Simular Corrida / Rota
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 text-white py-24 overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="space-y-6">
+                <span class="inline-flex items-center space-x-2 bg-blue-500/10 text-blue-400 border border-blue-500/20 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">
+                    <span>🚗 Mobilidade Inteligente</span>
+                </span>
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
+                    Liberdade para dirigir ou <span class="text-blue-400">lucrar</span> com seu carro.
+                </h1>
+                <p class="text-lg text-slate-300">
+                    Alugue veículos revisados para sua viagem ou rotina, ou cadastre seu automóvel em nossa plataforma.
+                </p>
+                <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 pt-4">
+                    <a href="#frota" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-3.5 rounded-xl shadow-lg shadow-blue-600/30 text-center transition">
+                        Ver Carros Disponíveis
+                    </a>
+                    <a href="#parceiros" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold px-8 py-3.5 rounded-xl text-center backdrop-blur transition">
+                        Quero ser Parceiro
+                    </a>
+                </div>
+            </div>
+            <div class="relative flex justify-center">
+                <div class="w-full max-w-lg bg-gradient-to-tr from-blue-600/20 to-indigo-500/20 p-2 rounded-3xl border border-white/10 backdrop-blur-md shadow-2xl">
+                    <img src="https://placehold.co/600x400/1e293b/ffffff?text=DriveFlex+Fleet" alt="Carro em destaque" class="rounded-2xl w-full object-cover shadow-inner">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Frota (Produtos) -->
+    <section id="frota" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">Diárias e Planos Semanais</span>
+            <h2 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl mt-3">Nossa Frota Disponível</h2>
+            <p class="mt-4 text-slate-600">Escolha entre locação diária tradicional ou aproveite nossos **planos semanais** com desconto e manutenção inclusa, ideais para motoristas parceiros e viagens prolongadas.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Card 1 -->
+            <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition flex flex-col justify-between">
+                <div>
+                    <img src="https://placehold.co/400x250/f1f5f9/334155?text=Hatch+Econômico" alt="Hatch" class="w-full h-48 object-cover">
+                    <div class="p-6 space-y-3">
+                        <span class="text-xs font-semibold bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full">Econômico</span>
+                        <h3 class="text-xl font-bold text-slate-900">Renault Kwid / Similar</h3>
+                        <p class="text-sm text-slate-500">Perfeito para o dia a dia na cidade, excelente consumo de combustível.</p>
+                        <div class="flex items-center space-x-4 text-xs text-slate-500 pt-2 border-t border-slate-100">
+                            <span>⚙️ Manual</span>
+                            <span>❄️ Ar-condicionado</span>
+                            <span>👥 5 Lugares</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6 pt-0 space-y-3">
+                    <div class="grid grid-cols-2 gap-2 bg-slate-50 p-3 rounded-xl border border-slate-100 text-center">
+                        <div>
+                            <span class="text-[10px] text-slate-400 uppercase font-semibold block">Diária</span>
+                            <span class="text-sm font-bold text-slate-800">R$ 89,90</span>
+                        </div>
+                        <div class="border-l border-slate-200">
+                            <span class="text-[10px] text-blue-600 uppercase font-semibold block">Plano Semanal</span>
+                            <span class="text-sm font-extrabold text-blue-600">R$ 549,90</span>
+                        </div>
+                    </div>
+                    <div class="space-y-2 pt-1">
+                        <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block">Diária - Pagamento:</span>
+                        <div class="grid grid-cols-3 gap-1">
+                            <button onclick="abrirModalReserva('Renault Kwid', 'Diária (R$ 89,90)', 'PIX')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 py-1.5 rounded-lg text-[10px] font-semibold transition text-center px-1">
+                                PIX
+                            </button>
+                            <button onclick="abrirModalReserva('Renault Kwid', 'Diária (R$ 89,90)', 'Cartão de Débito')" class="bg-slate-100 hover:bg-slate-200 text-slate-800 py-1.5 rounded-lg text-[10px] font-semibold transition text-center px-1">
+                                Débito
+                            </button>
+                            <button onclick="abrirModalReserva('Renault Kwid', 'Diária (R$ 89,90)', 'Cartão de Crédito')" class="bg-slate-100 hover:bg-slate-200 text-slate-800 py-1.5 rounded-lg text-[10px] font-semibold transition text-center px-1">
+                                Crédito
+                            </button>
+                        </div>
+                        <span class="text-[11px] font-semibold text-blue-600 uppercase tracking-wider block pt-1">Semanal - Pagamento:</span>
+                        <div class="grid grid-cols-3 gap-1">
+                            <button onclick="abrirModalReserva('Renault Kwid', 'Semanal (R$ 549,90)', 'PIX')" class="bg-emerald-600 hover:bg-emerald-500 text-white py-1.5 rounded-lg text-[10px] font-semibold transition shadow text-center px-1">
+                                PIX
+                            </button>
+                            <button onclick="abrirModalReserva('Renault Kwid', 'Semanal (R$ 549,90)', 'Cartão de Débito')" class="bg-blue-600 hover:bg-blue-500 text-white py-1.5 rounded-lg text-[10px] font-semibold transition shadow text-center px-1">
+                                Débito
+                            </button>
+                            <button onclick="abrirModalReserva('Renault Kwid', 'Semanal (R$ 549,90)', 'Cartão de Crédito')" class="bg-slate-900 hover:bg-blue-600 text-white py-1.5 rounded-lg text-[10px] font-semibold transition shadow text-center px-1">
+                                Crédito
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition flex flex-col justify-between">
+                <div>
+                    <img src="https://placehold.co/400x250/f1f5f9/334155?text=Sedan+Conforto" alt="Sedan" class="w-full h-48 object-cover">
+                    <div class="p-6 space-y-3">
+                        <span class="text-xs font-semibold bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full">Sedan Premium</span>
+                        <h3 class="text-xl font-bold text-slate-900">Chevrolet Onix Plus</h3>
+                        <p class="text-sm text-slate-500">Porta-malas espaçoso, conforto e tecnologia para viagens e trabalho.</p>
+                        <div class="flex items-center space-x-4 text-xs text-slate-500 pt-2 border-t border-slate-100">
+                            <span>⚙️ Automático</span>
+                            <span>❄️ Ar-condicionado</span>
+                            <span>🧳 Porta-malas 469L</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6 pt-0 space-y-3">
+                    <div class="grid grid-cols-2 gap-2 bg-slate-50 p-3 rounded-xl border border-slate-100 text-center">
+                        <div>
+                            <span class="text-[10px] text-slate-400 uppercase font-semibold block">Diária</span>
+                            <span class="text-sm font-bold text-slate-800">R$ 139,90</span>
+                        </div>
+                        <div class="border-l border-slate-200">
+                            <span class="text-[10px] text-blue-600 uppercase font-semibold block">Plano Semanal</span>
+                            <span class="text-sm font-extrabold text-blue-600">R$ 879,90</span>
+                        </div>
+                    </div>
+                    <div class="space-y-2 pt-1">
+                        <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block">Diária - Pagamento:</span>
+                        <div class="grid grid-cols-3 gap-1">
+                            <button onclick="abrirModalReserva('Chevrolet Onix Plus', 'Diária (R$ 139,90)', 'PIX')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 py-1.5 rounded-lg text-[10px] font-semibold transition text-center px-1">
+                                PIX
+                            </button>
+                            <button onclick="abrirModalReserva('Chevrolet Onix Plus', 'Diária (R$ 139,90)', 'Cartão de Débito')" class="bg-slate-100 hover:bg-slate-200 text-slate-800 py-1.5 rounded-lg text-[10px] font-semibold transition text-center px-1">
+                                Débito
+                            </button>
+                            <button onclick="abrirModalReserva('Chevrolet Onix Plus', 'Diária (R$ 139,90)', 'Cartão de Crédito')" class="bg-slate-100 hover:bg-slate-200 text-slate-800 py-1.5 rounded-lg text-[10px] font-semibold transition text-center px-1">
+                                Crédito
+                            </button>
+                        </div>
+                        <span class="text-[11px] font-semibold text-blue-600 uppercase tracking-wider block pt-1">Semanal - Pagamento:</span>
+                        <div class="grid grid-cols-3 gap-1">
+                            <button onclick="abrirModalReserva('Chevrolet Onix Plus', 'Semanal (R$ 879,90)', 'PIX')" class="bg-emerald-600 hover:bg-emerald-500 text-white py-1.5 rounded-lg text-[10px] font-semibold transition shadow text-center px-1">
+                                PIX
+                            </button>
+                            <button onclick="abrirModalReserva('Chevrolet Onix Plus', 'Semanal (R$ 879,90)', 'Cartão de Débito')" class="bg-blue-600 hover:bg-blue-500 text-white py-1.5 rounded-lg text-[10px] font-semibold transition shadow text-center px-1">
+                                Débito
+                            </button>
+                            <button onclick="abrirModalReserva('Chevrolet Onix Plus', 'Semanal (R$ 879,90)', 'Cartão de Crédito')" class="bg-slate-900 hover:bg-blue-600 text-white py-1.5 rounded-lg text-[10px] font-semibold transition shadow text-center px-1">
+                                Crédito
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition flex flex-col justify-between">
+                <div>
+                    <img src="https://placehold.co/400x250/f1f5f9/334155?text=SUV+Familiar" alt="SUV" class="w-full h-48 object-cover">
+                    <div class="p-6 space-y-3">
+                        <span class="text-xs font-semibold bg-purple-100 text-purple-800 px-2.5 py-1 rounded-full">SUV Compacto</span>
+                        <h3 class="text-xl font-bold text-slate-900">Jeep Renegade / Similar</h3>
+                        <p class="text-sm text-slate-500">Mais altura, robustez e segurança para qualquer tipo de terreno.</p>
+                        <div class="flex items-center space-x-4 text-xs text-slate-500 pt-2 border-t border-slate-100">
+                            <span>⚙️ Automático</span>
+                            <span>🧭 GPS Integrado</span>
+                            <span>🛡️ Segurança Total</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6 pt-0 space-y-3">
+                    <div class="grid grid-cols-2 gap-2 bg-slate-50 p-3 rounded-xl border border-slate-100 text-center">
+                        <div>
+                            <span class="text-[10px] text-slate-400 uppercase font-semibold block">Diária</span>
+                            <span class="text-sm font-bold text-slate-800">R$ 199,90</span>
+                        </div>
+                        <div class="border-l border-slate-200">
+                            <span class="text-[10px] text-blue-600 uppercase font-semibold block">Plano Semanal</span>
+                            <span class="text-sm font-extrabold text-blue-600">R$ 1.299,90</span>
+                        </div>
+                    </div>
+                    <div class="space-y-2 pt-1">
+                        <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block">Diária - Pagamento:</span>
+                        <div class="grid grid-cols-3 gap-1">
+                            <button onclick="abrirModalReserva('Jeep Renegade', 'Diária (R$ 199,90)', 'PIX')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 py-1.5 rounded-lg text-[10px] font-semibold transition text-center px-1">
+                                PIX
+                            </button>
+                            <button onclick="abrirModalReserva('Jeep Renegade', 'Diária (R$ 199,90)', 'Cartão de Débito')" class="bg-slate-100 hover:bg-slate-200 text-slate-800 py-1.5 rounded-lg text-[10px] font-semibold transition text-center px-1">
+                                Débito
+                            </button>
+                            <button onclick="abrirModalReserva('Jeep Renegade', 'Diária (R$ 199,90)', 'Cartão de Crédito')" class="bg-slate-100 hover:bg-slate-200 text-slate-800 py-1.5 rounded-lg text-[10px] font-semibold transition text-center px-1">
+                                Crédito
+                            </button>
+                        </div>
+                        <span class="text-[11px] font-semibold text-blue-600 uppercase tracking-wider block pt-1">Semanal - Pagamento:</span>
+                        <div class="grid grid-cols-3 gap-1">
+                            <button onclick="abrirModalReserva('Jeep Renegade', 'Semanal (R$ 1.299,90)', 'PIX')" class="bg-emerald-600 hover:bg-emerald-500 text-white py-1.5 rounded-lg text-[10px] font-semibold transition shadow text-center px-1">
+                                PIX
+                            </button>
+                            <button onclick="abrirModalReserva('Jeep Renegade', 'Semanal (R$ 1.299,90)', 'Cartão de Débito')" class="bg-blue-600 hover:bg-blue-500 text-white py-1.5 rounded-lg text-[10px] font-semibold transition shadow text-center px-1">
+                                Débito
+                            </button>
+                            <button onclick="abrirModalReserva('Jeep Renegade', 'Semanal (R$ 1.299,90)', 'Cartão de Crédito')" class="bg-slate-900 hover:bg-blue-600 text-white py-1.5 rounded-lg text-[10px] font-semibold transition shadow text-center px-1">
+                                Crédito
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nova Seção: Viagem com Motorista Particular -->
+    <section id="motorista" class="py-20 bg-slate-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="space-y-6">
+                <span class="bg-indigo-500/20 text-indigo-300 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">Serviço Executivo</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Viagens com Motorista Particular e Traslados</h2>
+                <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                    Precisa de conforto total para reuniões, eventos, aeroportos ou viagens intermunicipais? Nossa frota conta com motoristas profissionais bilíngues, pontuais e discretos à sua disposição por hora ou por trajeto.
+                </p>
+                <div class="grid grid-cols-2 gap-4 pt-2">
+                    <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+                        <span class="text-indigo-400 font-bold text-lg block">Aeroportos</span>
+                        <span class="text-xs text-slate-400">Recepção com placa no desembarque</span>
+                    </div>
+                    <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+                        <span class="text-indigo-400 font-bold text-lg block">Por Hora / Diária</span>
+                        <span class="text-xs text-slate-400">Motorista à disposição para múltiplos destinos</span>
+                    </div>
+                </div>
+                <div>
+                    <a href="#calculadora" class="inline-block bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-8 py-3.5 rounded-xl shadow-lg transition text-sm">
+                        Solicitar Motorista Agora
+                    </a>
+                </div>
+            </div>
+            <div class="relative">
+                <div class="bg-gradient-to-tr from-indigo-600/30 to-blue-600/30 p-2 rounded-3xl border border-white/10 backdrop-blur-md">
+                    <img src="https://placehold.co/600x450/0f172a/ffffff?text=Motorista+Particular+Executivo" alt="Motorista Particular" class="rounded-2xl w-full object-cover shadow-inner">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nova Seção: Calculadora de Rota e Orçamento -->
+    <section id="calculadora" class="py-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-xl p-8 sm:p-12">
+            <div class="text-center max-w-xl mx-auto mb-10">
+                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">Simulador Inteligente</span>
+                <h2 class="text-3xl font-bold tracking-tight text-slate-900 mt-3">Calcule sua Rota e Orçamento</h2>
+                <p class="mt-2 text-slate-600 text-sm">Informe sua origem e destino para estimar quilometragem, tempo e valor do serviço desejado.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-2">Ponto de Origem</label>
+                    <input type="text" id="calc_origem" placeholder="Ex: Av. Paulista, 1000 - SP" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-2">Destino Desejado</label>
+                    <input type="text" id="calc_destino" placeholder="Ex: Aeroporto de Guarulhos" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-2">Tipo de Serviço</label>
+                    <select id="calc_tipo" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-600">
+                        <option value="motorista">Viagem com Motorista Particular</option>
+                        <option value="diaria">Locação de Carro (Diária)</option>
+                        <option value="semanal">Locação de Carro (Plano Semanal)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button onclick="calcularRota()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3.5 rounded-xl shadow-lg shadow-blue-600/30 transition text-sm">
+                    Calcular Rota e Preço Estimado
+                </button>
+            </div>
+
+            <!-- Resultado do Cálculo -->
+            <div id="calc_resultado" class="hidden mt-8 p-6 bg-slate-50 border border-slate-200 rounded-2xl">
+                <h4 class="font-bold text-slate-900 text-lg mb-4 flex items-center space-x-2">
+                    <span>📍 Resultado da Simulação de Rota</span>
+                </h4>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center mb-6">
+                    <div class="bg-white p-4 rounded-xl border border-slate-100">
+                        <span class="text-xs text-slate-400 uppercase font-semibold block">Distância Estimada</span>
+                        <span id="res_km" class="text-xl font-bold text-slate-800">-- km</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-100">
+                        <span class="text-xs text-slate-400 uppercase font-semibold block">Tempo Estimado</span>
+                        <span id="res_tempo" class="text-xl font-bold text-slate-800">-- min</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-100">
+                        <span class="text-xs text-blue-600 uppercase font-semibold block">Valor Estimado</span>
+                        <span id="res_preco" class="text-xl font-extrabold text-blue-600">R$ --,--</span>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button onclick="confirmarReservaCalculada()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-6 py-2.5 rounded-xl text-sm transition shadow">
+                        Confirmar e Avançar para Pagamento (Split)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Como Funciona / Vantagens -->
+    <section id="como-funciona" class="bg-slate-100 py-20 border-y border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Como Funciona a DriveFlex</h2>
+                <p class="mt-4 text-slate-600">Processo simples, transparente e 100% digital tanto para quem aluga quanto para quem cadastra.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center font-bold text-lg mb-4">1</div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Escolha ou Cadastre</h3>
+                    <p class="text-sm text-slate-600">Selecione o veículo perfeito para sua viagem ou cadastre seu próprio carro em nossa base de parceiros.</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center font-bold text-lg mb-4">2</div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Retirada ou Lucro</h3>
+                    <p class="text-sm text-slate-600">Retire o veículo na agência selecionada ou receba os repasses das suas locações diretamente na sua conta bancária sem burocracia.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Novos Parceiros (Com Split Explícito) -->
+    <section id="parceiros" class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-gradient-to-r from-blue-900 to-indigo-900 rounded-3xl text-white p-8 sm:p-12 lg:p-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center shadow-2xl">
+            <div class="space-y-6">
+                <span class="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">Seja um Parceiro DriveFlex</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Tem um carro parado? Coloque-o para render com segurança!</h2>
+                <ul class="space-y-3 text-sm text-slate-200">
+                    <li class="flex items-center space-x-2">
+                        <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <span>Seguro completo contra terceiros e rastreamento incluso</span>
+                    </li>
+                    <li class="flex items-center space-x-2">
+                        <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <span>Gestão de multas e vistorias integrada na plataforma</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Formulário do Parceiro -->
+            <div class="bg-white text-slate-800 p-8 rounded-2xl shadow-xl">
+                <h3 class="text-xl font-bold mb-4 text-slate-900">Cadastre seu Veículo</h3>
+                <form id="partnerForm" onsubmit="enviarParceiro(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Seu Nome Completo</label>
+                        <input type="text" id="p_nome" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm" placeholder="Ex: Carlos Silva">
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">E-mail</label>
+                            <input type="email" id="p_email" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm" placeholder="seu@email.com">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Telefone / WhatsApp</label>
+                            <input type="text" id="p_fone" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm" placeholder="(11) 99999-9999">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Modelo do Carro</label>
+                            <input type="text" id="p_modelo" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm" placeholder="Ex: Hyundai HB20">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Ano do Veículo</label>
+                            <input type="number" id="p_ano" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm" placeholder="Ex: 2023">
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl shadow-lg shadow-blue-600/30 transition text-sm">
+                        Enviar para Análise
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+            <div class="flex items-center space-x-2">
+                <span class="text-white font-bold text-lg">DriveFlex Locadora</span>
+            </div>
+            <p class="text-xs">© 2026 DriveFlex Locação de Veículos Ltda. Todos os direitos reservados.</p>
+            <div class="flex space-x-6 text-sm">
+                <a href="#" class="hover:text-white transition">Privacidade</a>
+                <a href="#" class="hover:text-white transition">Termos de Uso</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript para interação segura (Sem usar alert()) -->
+    <script>
+        function mostrarToast(titulo, mensagem) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-title').innerText = titulo;
+            document.getElementById('toast-message').innerText = mensagem;
+            
+            toast.classList.remove('translate-y-32', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-32', 'opacity-0');
+            }, 4000);
+        }
+
+        function abrirModalReserva(carro, plano, pagamento) {
+            mostrarToast("Reserva Iniciada", `Você selecionou o ${carro} (${plano}) com pagamento via ${pagamento}. Redirecionando para checkout...`);
+        }
+
+        function enviarParceiro(event) {
+            event.preventDefault();
+            const nome = document.getElementById('p_nome').value;
+            const modelo = document.getElementById('p_modelo').value;
+            
+            mostrarToast("Cadastro Recebido!", `Obrigado, ${nome}! Seu ${modelo} foi pré-cadastrado. Nossa equipe entrará em contato.`);
+            document.getElementById('partnerForm').reset();
+        }
+
+        function calcularRota() {
+            const origem = document.getElementById('calc_origem').value;
+            const destino = document.getElementById('calc_destino').value;
+            const tipo = document.getElementById('calc_tipo').value;
+
+            if (!origem || !destino) {
+                mostrarToast("Atenção", "Por favor, preencha a origem e o destino para calcular a rota.");
+                return;
+            }
+
+            const kmRandom = Math.floor(Math.random() * 35) + 8;
+            const tempoRandom = Math.floor(kmRandom * 2.2) + 10;
+            
+            let precoBase = kmRandom * 4.5;
+            if (tipo === 'diaria') precoBase = 120.00;
+            if (tipo === 'semanal') precoBase = 799.90;
+
+            document.getElementById('res_km').innerText = kmRandom + " km";
+            document.getElementById('res_tempo').innerText = tempoRandom + " min";
+            document.getElementById('res_preco').innerText = "R$ " + precoBase.toFixed(2).replace('.', ',');
+
+            document.getElementById('calc_resultado').classList.remove('hidden');
+            mostrarToast("Rota Calculada!", "Simulação concluída com sucesso.");
+        }
+
+        function confirmarReservaCalculada() {
+            mostrarToast("Sucesso!", "Sua rota e serviço foram confirmados. Direcionando para o gateway de pagamento...");
+        }
+    </script>
+</body>
+</html>
+```
